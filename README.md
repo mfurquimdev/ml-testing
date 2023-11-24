@@ -2,5 +2,5 @@
 
 ```bash
 http GET :8000/train/1 name=='asd'
-http --json POST :8000/train/1 name=='asd' model_id:=2 name="lkj"
+http --json POST :44681/train/1 name=='asd' num:=2 name="lkj"
 ```
