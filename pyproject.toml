@@ -1,10 +1,32 @@
 [project]
 name = "ml-test"
 version = "0.1.0"
-description = "Test for ML job"
+description = """Test for ML job"""
 authors = [
     {name = "Mateus Furquim", email = "mfurquimdev@gmail.com"},
 ]
+
+requires-python = ">=3.11,<3.12"
+
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Framework :: FastAPI",
+    "Framework :: Pydantic :: 2",
+    "Framework :: Pydantic",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Education",
+    "Topic :: Internet",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development",
+    "Topic :: System :: Installation/Setup",
+    "Typing :: Typed",
+]
+readme = "README.md"
+license = {text = "MIT"}
+
 dependencies = [
     "pandas==1.5.3",
     "numpy==1.25.0",
@@ -14,9 +36,6 @@ dependencies = [
     "python-multipart==0.0.6",
     "httpx==0.25.1",
 ]
-requires-python = ">=3.11,<3.13"
-readme = "README.md"
-license = {text = "MIT"}
 
 [tool.pdm.dev-dependencies]
 dev = [
