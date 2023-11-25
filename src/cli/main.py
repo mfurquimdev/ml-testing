@@ -9,7 +9,13 @@ import typer
 from rich.console import Console
 from typing_extensions import Annotated
 
-app = typer.Typer(name="ML Caller", add_completion=False)
+app = typer.Typer(
+    name="ML Caller",
+    add_completion=False,
+    rich_markup_mode="rich",
+    epilog="Made with [bold red]:heart:[/bold red] by [green]MFurquim Dev[/green]",
+)
+
 err_console = Console(stderr=True, style="bold red")
 console = Console()
 
@@ -56,7 +62,8 @@ def post(
     date_reference: Annotated[
         Union[datetime, None],
         typer.Option(
-            help="Choose a date. Default is the current date.",
+            rich_help_panel="",
+            help=r"[dim]\[default: today][/dim]",
             show_default=False,
             formats=["%Y-%m-%d"],
         ),
@@ -76,7 +83,7 @@ def post(
     location: Path = validate_file_location(location)
 
     console.print(
-        f"Hello {name} ({age}) {'yes' if truth else 'no'} at {date_reference.date()} with "
+        f"Hello {name} ({age}) {truth} at {date_reference.date()} with "
         f"{network.value}.\nFile located at {location} contains {location.stat().st_size} chars"
     )
 
@@ -94,8 +101,8 @@ def main(
     if verbose:
         state["verbose"] = True
 
-    if verbose and ctx.invoked_subcommand is not None:
-        print(f"About to execute command: {ctx.invoked_subcommand}")
+    if ctx.invoked_subcommand is None:
+        err_console.print("Please, specify a command.")
 
 
 if __name__ == "__main__":

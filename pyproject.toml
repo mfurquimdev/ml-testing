@@ -52,8 +52,8 @@ dev = [
 ]
 
 [tool.pdm.scripts]
-server.cmd = "python src/server.py"
-cli.cmd = "python src/cli.py"
+server.cmd = "python src/server/main.py"
+cli.cmd = "python src/cli/main.py"
 env_file.override = ".env"
 
 [tool.mypy]
