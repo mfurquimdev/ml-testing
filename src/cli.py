@@ -1,5 +1,6 @@
 from typing import List
 from typing import Tuple
+from typing import Union
 
 import typer
 from rich.console import Console
@@ -37,16 +38,14 @@ def complete_name(incomplete: str):
 def post(
     ctx: typer.Context,
     name: Annotated[str, typer.Argument(autocompletion=complete_name)],
-    age: Annotated[int, typer.Option(min=18)] = 21,
-    force: Annotated[
-        bool, typer.Option(prompt="Are you sure you want to delete the user?")
-    ] = False,
+    age: Annotated[int, typer.Option(prompt="How old are you?", min=18)] = 21,
+    truth: Annotated[Union[bool, None], typer.Option("--truth/--lie", "-t/-f")] = None,
 ):
     if state["verbose"]:
         for extra_arg in ctx.args:
             err_console.print(f"Got extra arg: {extra_arg}")
 
-    print(f"Hello {name} ({age}) {'yes' if force else 'no'}")
+    print(f"Hello {name} ({age}) {'yes' if truth else 'no'}")
 
 
 @app.command()
