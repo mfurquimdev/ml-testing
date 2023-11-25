@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 from typing import Tuple
 from typing import Union
@@ -40,12 +41,22 @@ def post(
     name: Annotated[str, typer.Argument(autocompletion=complete_name)],
     age: Annotated[int, typer.Option(prompt="How old are you?", min=18)] = 21,
     truth: Annotated[Union[bool, None], typer.Option("--truth/--lie", "-t/-f")] = None,
+    date_reference: Annotated[
+        Union[datetime, None],
+        typer.Option(
+            help="Choose a date. Default is the current date.",
+            show_default=False,
+            formats=["%Y-%m-%d"],
+        ),
+    ] = None,
 ):
+    date_reference = date_reference or datetime.now()
+
     if state["verbose"]:
         for extra_arg in ctx.args:
             err_console.print(f"Got extra arg: {extra_arg}")
 
-    print(f"Hello {name} ({age}) {'yes' if truth else 'no'}")
+    print(f"Hello {name} ({age}) {'yes' if truth else 'no'} at {date_reference.date()}")
 
 
 @app.command()
