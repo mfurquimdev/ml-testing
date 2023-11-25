@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 from typing import List
 from typing import Tuple
 from typing import Union
@@ -30,6 +31,12 @@ def complete_name(incomplete: str):
     return completion
 
 
+class NeuralNetwork(str, Enum):
+    simple = "simple"
+    conv = "conv"
+    lstm = "lstm"
+
+
 @app.command(
     context_settings={
         "allow_extra_args": True,
@@ -49,6 +56,7 @@ def post(
             formats=["%Y-%m-%d"],
         ),
     ] = None,
+    network: Annotated[NeuralNetwork, typer.Option(case_sensitive=False)] = NeuralNetwork.simple,
 ):
     date_reference = date_reference or datetime.now()
 
@@ -56,7 +64,10 @@ def post(
         for extra_arg in ctx.args:
             err_console.print(f"Got extra arg: {extra_arg}")
 
-    print(f"Hello {name} ({age}) {'yes' if truth else 'no'} at {date_reference.date()}")
+    print(
+        f"Hello {name} ({age}) {'yes' if truth else 'no'} "
+        f"at {date_reference.date()} with {network.value}"
+    )
 
 
 @app.command()
