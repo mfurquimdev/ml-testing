@@ -48,6 +48,7 @@ dev = [
     "pyright",
     "ruff",
     "uvicorn",
+    "ipython>=8.18.0",
 ]
 
 [tool.pdm.scripts]

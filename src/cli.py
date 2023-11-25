@@ -1,5 +1,6 @@
 from datetime import datetime
 from enum import Enum
+from pathlib import Path
 from typing import List
 from typing import Tuple
 from typing import Union
@@ -9,7 +10,8 @@ from rich.console import Console
 from typing_extensions import Annotated
 
 app = typer.Typer()
-err_console = Console(stderr=True)
+err_console = Console(stderr=True, style="bold red")
+console = Console()
 
 state = {"verbose": False}
 
@@ -37,6 +39,26 @@ class NeuralNetwork(str, Enum):
     lstm = "lstm"
 
 
+def validate_file_location(location: Union[Path, None]) -> Path:
+    if location is None:
+        err_console.print("Please, provide file path with --location")
+        raise typer.Abort()
+
+    if (
+        location.is_socket()
+        or location.is_fifo()
+        or location.is_block_device()
+        or location.is_char_device()
+    ):
+        err_console.print("The given location does not point to a regular file.")
+        raise typer.Abort()
+
+    if location.is_symlink():
+        console.print("Careful, this is a symlink, not a file", style="yellow underline")
+
+    return location
+
+
 @app.command(
     context_settings={
         "allow_extra_args": True,
@@ -57,6 +79,10 @@ def post(
         ),
     ] = None,
     network: Annotated[NeuralNetwork, typer.Option(case_sensitive=False)] = NeuralNetwork.simple,
+    location: Annotated[  # type: ignore
+        Union[Path, None],
+        typer.Option(exists=True, file_okay=True, dir_okay=False),
+    ] = None,
 ):
     date_reference = date_reference or datetime.now()
 
@@ -64,9 +90,11 @@ def post(
         for extra_arg in ctx.args:
             err_console.print(f"Got extra arg: {extra_arg}")
 
-    print(
-        f"Hello {name} ({age}) {'yes' if truth else 'no'} "
-        f"at {date_reference.date()} with {network.value}"
+    location: Path = validate_file_location(location)
+
+    console.print(
+        f"Hello {name} ({age}) {'yes' if truth else 'no'} at {date_reference.date()} with "
+        f"{network.value}.\nFile located at {location} contains {location.stat().st_size} chars"
     )
 
 
