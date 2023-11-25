@@ -8,7 +8,7 @@ from rich.console import Console
 
 epilog = r"[dim]Made in brazil by [bold blue]MFurquim Dev[/bold blue][/dim]"
 err_console = Console(stderr=True, style="bold red")
-verbose_console = Console(style="yellow")
+verbose_console = Console(stderr=True, style="yellow")
 console = Console()
 
 

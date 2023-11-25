@@ -56,7 +56,7 @@ def replaced_by_name_in_command_decorator(
 
     if state["verbose"]:
         for extra_arg in ctx.args:
-            err_console.print(f"Got extra arg: {extra_arg}")
+            err_console.log(f"Got extra arg: {extra_arg}")
 
     location: Path = validate_file_location(location)
 
@@ -77,13 +77,13 @@ def main(
     Sample code with most used features
     """
     if ctx.invoked_subcommand is None:
-        err_console.print("Please, specify a command.")
+        err_console.log("Please, specify a command.")
         ctx.get_help()
         raise typer.Exit(code=1)
 
     if verbose:
         state["verbose"] = True
-        verbose_console.print(f"About to execute command: [bold]{ctx.invoked_subcommand}[/bold]")
+        verbose_console.log(f"About to execute command: [bold]{ctx.invoked_subcommand}[/bold]")
 
 
 if __name__ == "__main__":
