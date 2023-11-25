@@ -9,28 +9,11 @@ import typer
 from rich.console import Console
 from typing_extensions import Annotated
 
-app = typer.Typer()
+app = typer.Typer(name="ML Caller", add_completion=False)
 err_console = Console(stderr=True, style="bold red")
 console = Console()
 
 state = {"verbose": False}
-
-valid_completion_items: List[Tuple[str, str]] = [
-    ("Aurora", "The light of my life"),
-    ("Larissa", "My life's partner"),
-    ("Mateus", "Me self"),
-    ("Olivia", "The youngest adorable daughter"),
-    ("Romeo", "The brightest mind"),
-]
-
-
-def complete_name(incomplete: str):
-    completion = []
-    for name, help_text in valid_completion_items:
-        if name.startswith(incomplete):
-            completion_item = (name, help_text)
-            completion.append(completion_item)
-    return completion
 
 
 class NeuralNetwork(str, Enum):
@@ -67,7 +50,7 @@ def validate_file_location(location: Union[Path, None]) -> Path:
 )
 def post(
     ctx: typer.Context,
-    name: Annotated[str, typer.Argument(autocompletion=complete_name)],
+    name: Annotated[str, typer.Argument()],
     age: Annotated[int, typer.Option(prompt="How old are you?", min=18)] = 21,
     truth: Annotated[Union[bool, None], typer.Option("--truth/--lie", "-t/-f")] = None,
     date_reference: Annotated[
@@ -98,22 +81,20 @@ def post(
     )
 
 
-@app.command()
-def get(age: int, name: str):
-    print(f"Hello {name} ({age})")
-
-
 @app.callback(
     invoke_without_command=True,
 )
-def main(ctx: typer.Context, verbose: bool = False):
+def main(
+    ctx: typer.Context,
+    verbose: Annotated[bool, typer.Option("--verbose")] = False,
+):
     """
     Make requests to the API.
     """
     if verbose:
         state["verbose"] = True
 
-    if ctx.invoked_subcommand is None:
+    if verbose and ctx.invoked_subcommand is not None:
         print(f"About to execute command: {ctx.invoked_subcommand}")
 
 
