@@ -1,3 +1,4 @@
+"""Script containing sample of Typer CLI."""
 from datetime import datetime
 from pathlib import Path
 from typing import Union
@@ -13,7 +14,7 @@ from cli.common import validate_file_location
 from cli.common import verbose_console
 
 app = typer.Typer(
-    name="Sample Code",
+    name="sample",
     add_completion=False,
     rich_markup_mode="rich",
     epilog=epilog,
@@ -31,7 +32,7 @@ state = {"verbose": False}
     },
     epilog=epilog,
 )
-def replaced_by_name_in_command(
+def replaced_by_name_in_command_decorator(
     ctx: typer.Context,
     name: Annotated[str, typer.Argument()],
     age: Annotated[int, typer.Option(prompt="How old are you?", min=18)] = 21,
