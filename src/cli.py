@@ -2,9 +2,11 @@ from typing import List
 from typing import Tuple
 
 import typer
+from rich.console import Console
 from typing_extensions import Annotated
 
 app = typer.Typer()
+err_console = Console(stderr=True)
 
 state = {"verbose": False}
 
@@ -35,21 +37,21 @@ def complete_name(incomplete: str):
 def post(
     ctx: typer.Context,
     name: Annotated[str, typer.Argument(autocompletion=complete_name)],
+    age: Annotated[int, typer.Option(min=18)] = 21,
     force: Annotated[
         bool, typer.Option(prompt="Are you sure you want to delete the user?")
     ] = False,
-    num: int = 1,
 ):
     if state["verbose"]:
         for extra_arg in ctx.args:
-            print(f"Got extra arg: {extra_arg}")
+            err_console.print(f"Got extra arg: {extra_arg}")
 
-    print(f"Hello {name} ({num}) {'yes' if force else 'no'}")
+    print(f"Hello {name} ({age}) {'yes' if force else 'no'}")
 
 
 @app.command()
-def get(num: int, name: str):
-    print(f"Hello {name} ({num})")
+def get(age: int, name: str):
+    print(f"Hello {name} ({age})")
 
 
 @app.callback(
