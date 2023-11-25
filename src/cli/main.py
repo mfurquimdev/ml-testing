@@ -1,9 +1,7 @@
 """Main script for Typer CLI."""
 import typer
 
-from cli.common import console
 from cli.common import epilog
-from cli.common import err_console
 from cli.sample import app as sample_app
 
 app = typer.Typer(
@@ -23,7 +21,7 @@ app.add_typer(
 @app.callback()
 def main():
     """
-    Make requests to the API.
+    Main script for Typer CLI.
     """
 
 

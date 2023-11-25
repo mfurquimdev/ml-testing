@@ -1,4 +1,5 @@
 """Script containing common variables and functions."""
+from enum import Enum
 from pathlib import Path
 from typing import Union
 
@@ -7,7 +8,14 @@ from rich.console import Console
 
 epilog = r"[dim]Made in brazil by [bold blue]MFurquim Dev[/bold blue][/dim]"
 err_console = Console(stderr=True, style="bold red")
+verbose_console = Console(style="yellow")
 console = Console()
+
+
+class NeuralNetwork(str, Enum):
+    simple = "simple"
+    conv = "conv"
+    lstm = "lstm"
 
 
 def validate_file_location(location: Union[Path, None]) -> Path:

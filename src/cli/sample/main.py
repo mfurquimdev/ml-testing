@@ -1,16 +1,16 @@
 from datetime import datetime
-from enum import Enum
 from pathlib import Path
-from typing import List
-from typing import Tuple
 from typing import Union
 
 import typer
 from typing_extensions import Annotated
 
+from cli.common import NeuralNetwork
 from cli.common import console
 from cli.common import epilog
 from cli.common import err_console
+from cli.common import validate_file_location
+from cli.common import verbose_console
 
 app = typer.Typer(
     name="Sample Code",
@@ -22,32 +22,6 @@ app = typer.Typer(
 state = {"verbose": False}
 
 
-class NeuralNetwork(str, Enum):
-    simple = "simple"
-    conv = "conv"
-    lstm = "lstm"
-
-
-def validate_file_location(location: Union[Path, None]) -> Path:
-    if location is None:
-        err_console.print("Please, provide file path with --location")
-        raise typer.Exit(code=2)
-
-    if (
-        location.is_socket()
-        or location.is_fifo()
-        or location.is_block_device()
-        or location.is_char_device()
-    ):
-        err_console.print("The given location does not point to a regular file.")
-        raise typer.Exit(code=2)
-
-    if location.is_symlink():
-        console.print("Careful, this is a symlink, not a file", style="yellow underline")
-
-    return location
-
-
 @app.command(
     name="run_me",
     help="The only command in this sample.",
@@ -57,7 +31,7 @@ def validate_file_location(location: Union[Path, None]) -> Path:
     },
     epilog=epilog,
 )
-def sample(
+def replaced_by_name_in_command(
     ctx: typer.Context,
     name: Annotated[str, typer.Argument()],
     age: Annotated[int, typer.Option(prompt="How old are you?", min=18)] = 21,
@@ -103,11 +77,12 @@ def main(
     """
     if ctx.invoked_subcommand is None:
         err_console.print("Please, specify a command.")
+        ctx.get_help()
         raise typer.Exit(code=1)
 
     if verbose:
         state["verbose"] = True
-        console.print(f"About to execute command: {ctx.invoked_subcommand}")
+        verbose_console.print(f"About to execute command: [bold]{ctx.invoked_subcommand}[/bold]")
 
 
 if __name__ == "__main__":
