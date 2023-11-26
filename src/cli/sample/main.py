@@ -94,7 +94,9 @@ def replaced_by_name_in_command_decorator(
         Union[Path, None],
         typer.Option(exists=True, file_okay=True, dir_okay=False),
     ] = None,
-    error: Annotated[bool, typer.Option("--error", "-e")] = False,
+    error: Annotated[
+        bool, typer.Option("--error", "-e", is_flag=True, help="Force raising an exception.")
+    ] = False,
 ):
     # Get default value from a function
     date_reference = date_reference or datetime.now()
