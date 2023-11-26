@@ -49,6 +49,7 @@ def train(ctx: typer.Context):
     except httpx.HTTPStatusError as exc:
         err_console.print_exception()
         print_json(err_console, exc.response.text)
+
         raise typer.Exit(code=1) from exc
 
 
