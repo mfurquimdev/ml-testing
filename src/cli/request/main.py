@@ -30,7 +30,6 @@ def train(ctx: typer.Context):
     path_param = "1"
     query_params = {"name": "test"}
     body_params = {"name": "asd", "num": 2}
-    body_params = {}
 
     endpoint = f"/sample/{path_param}"
     url = f"{backend_settings.server_address}:{backend_settings.port_number}{endpoint}"
@@ -40,7 +39,7 @@ def train(ctx: typer.Context):
         f"query params: {query_params} and body params: {body_params}"
     )
     try:
-        with verbose_console.status("Making GET request", spinner="arc"):
+        with verbose_console.status("Making POST request", spinner="arc"):
             response = httpx.post(url, params=query_params, json=body_params).raise_for_status()
         data = response.json()
         console.rule("Output", style="dim blue")

@@ -4,10 +4,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Union
 
+import httpx
 import typer
-from httpx import HTTPStatusError
-from httpx import Request
-from httpx import Response
 from typing_extensions import Annotated
 
 from cli.common import NeuralNetwork
@@ -17,6 +15,7 @@ from cli.common import err_console
 from cli.common import print_json
 from cli.common import validate_file_location
 from cli.common import verbose_console
+from config import backend_settings
 
 app = typer.Typer(
     name="sample",
@@ -38,12 +37,12 @@ def raise_exception():
         "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/422"
     )
 
-    request: Request = Request(
+    request: httpx.Request = httpx.Request(
         method="POST",
         url="http://localhost:44681/sample/1?name=test",
     )
 
-    response: Response = Response(
+    response: httpx.Response = httpx.Response(
         status_code=422,
         json={
             "detail": [
@@ -64,12 +63,12 @@ def raise_exception():
             ]
         },
     )
-    raise HTTPStatusError(message, request=request, response=response)
+    raise httpx.HTTPStatusError(message, request=request, response=response)
 
 
 @app.command(
     name="run_me",
-    help="The only command in this sample.",
+    help="A command with most common typer features.",
     context_settings={
         "allow_extra_args": True,
         "ignore_unknown_options": True,
@@ -97,20 +96,22 @@ def replaced_by_name_in_command_decorator(
     ] = None,
     error: Annotated[bool, typer.Option("--error", "-e")] = False,
 ):
+    # Get default value from a function
     date_reference = date_reference or datetime.now()
 
-    if state["verbose"]:
-        for extra_arg in ctx.args:
-            err_console.log(f"Got extra arg: {extra_arg}")
+    # Identify and print all unrecognized arguments
+    for extra_arg in ctx.args:
+        verbose_console.log(f"Got extra arg: {extra_arg}")
 
+    # Custom validation of parameter
     location: Path = validate_file_location(location)
 
     if error:
         try:
-            with verbose_console.status("Generating sample exception", spinner="arc"):
+            with console.status("Generating sample exception", spinner="arc"):
                 raise_exception()
 
-        except HTTPStatusError as exc:
+        except httpx.HTTPStatusError as exc:
             err_console.print_exception()
             print_json(err_console, data=exc.response.json())
 
@@ -120,6 +121,33 @@ def replaced_by_name_in_command_decorator(
         f"Hello {name} ({age}) {truth} at {date_reference.date()} with "
         f"{network.value}.\nFile located at {location} contains {location.stat().st_size} chars"
     )
+
+
+@app.command(help="Sample POST request on /sample/{id} endpoint.")
+def request():
+    path_param = "1"
+    query_params = {"name": "test"}
+    body_params = {"name": "asd", "num": 2}
+
+    endpoint = f"/sample/{path_param}"
+    url = f"{backend_settings.server_address}:{backend_settings.port_number}{endpoint}"
+
+    verbose_console.log(
+        f"Making POST request on {url} with "
+        f"query params: {query_params} and body params: {body_params}"
+    )
+    try:
+        with verbose_console.status("Making POST request", spinner="arc"):
+            response = httpx.post(url, params=query_params, json=body_params).raise_for_status()
+
+        verbose_console.rule("[white]Output", style="dim blue")
+        print_json(console, data=response.json())
+
+    except httpx.HTTPStatusError as exc:
+        err_console.print_exception()
+        print_json(err_console, exc.response.text)
+
+        raise typer.Exit(code=1) from exc
 
 
 @app.callback(
@@ -132,14 +160,19 @@ def main(
     """
     Sample code with most used features
     """
+    # Custom message if no command is provided
     if ctx.invoked_subcommand is None:
         err_console.log("Please, specify a command.")
         ctx.get_help()
         raise typer.Exit(code=1)
 
-    if verbose:
-        state["verbose"] = True
-        verbose_console.log(f"About to execute command: [bold]{ctx.invoked_subcommand}[/bold]")
+    # Forward verbose state to commands
+    state["verbose"] = verbose
+
+    # Disable the verbose console if verbose is not set
+    verbose_console.quiet = not verbose
+
+    verbose_console.log(f"About to execute command: [bold]{ctx.invoked_subcommand}[/bold]")
 
 
 if __name__ == "__main__":
