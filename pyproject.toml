@@ -37,6 +37,7 @@ dependencies = [
     "httpx==0.25.1",
     "typer>=0.9.0",
     "rich>=13.7.0",
+    "pydantic-settings>=2.1.0",
 ]
 
 [tool.pdm.dev-dependencies]

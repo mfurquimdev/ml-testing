@@ -1,3 +1,4 @@
+import time
 from typing import Annotated
 
 from fastapi import APIRouter
@@ -42,6 +43,7 @@ async def post_model(
         f"POST num={num} ({type(num)}); name={name} ({type(name)}); "
         f"model={model} ({type(model)})"
     )
+    time.sleep(2)
     return {
         "num": num,
         "name": name,

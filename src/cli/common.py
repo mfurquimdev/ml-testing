@@ -36,3 +36,28 @@ def validate_file_location(location: Union[Path, None]) -> Path:
         console.print("Careful, this is a symlink, not a file", style="yellow underline")
 
     return location
+
+
+def print_json(console: Console, text: str = "", *, data: Union[dict, None] = None):
+    _style = err_console.style
+    console.style = "black"
+
+    if text:
+        console.print_json(text)
+    elif data:
+        console.print_json(data=data)
+    else:
+        raise ValueError("Either 'text' or 'data' must be provided")
+
+    console.style = _style
+
+
+__all__ = [
+    "NeuralNetwork",
+    "console",
+    "epilog",
+    "err_console",
+    "print_json",
+    "validate_file_location",
+    "verbose_console",
+]
