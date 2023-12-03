@@ -8,6 +8,7 @@ Take a look at `sample run_me` command at [src/cli/sample/main.py](src/cli/sampl
 ```bash
 pdm cli sample --verbose run_me Larissa --lie --network simplE --location src/cli/sample/main.py -e
 pdm cli sample request
+pdm cli request tracks
 ```
 
 
