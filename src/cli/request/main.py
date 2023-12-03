@@ -4,7 +4,7 @@ from asyncio import run as aiorun
 import httpx
 import orjson
 import typer
-from attrs import frozen
+from pydantic import BaseModel
 from typing_extensions import Annotated
 
 from cli.common import console
@@ -22,8 +22,7 @@ app = typer.Typer(
 )
 
 
-@frozen
-class TrackFeatures:
+class TrackFeatures(BaseModel):
     track_id: str
     track_name: str
     track_artists: set[str]
@@ -40,12 +39,6 @@ class TrackFeatures:
     tempo: float
     duration_ms: float
     time_signature: int
-
-    def __iter__(self):
-        for k in self.__slots__:
-            if not k.startswith("_"):
-                v = self.__getattribute__(k)
-                yield k, v
 
 
 state = {"verbose": False}
@@ -80,7 +73,6 @@ def tracks(ctx: typer.Context):
             track_features = aiorun(make_request(url=url))
         console.rule("Output", style="dim blue")
         console.print(track_features)
-        # print_json(console, data=track_features)
 
     except httpx.HTTPStatusError as exc:
         err_console.print_exception()
