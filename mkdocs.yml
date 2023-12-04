@@ -1,0 +1,143 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+---
+site_name          : Backend Template
+site_description   : Template for FastAPI and Typer with metrics, tracing and documentation using Material for MkDocs.
+# site_url           : https://github.com/mfurquimdev/ml-testing
+
+repo_name          : Backend Template
+repo_url           : https://github.com/mfurquimdev/ml-testing
+
+# https://www.mkdocs.org/user-guide/configuration/#validation
+strict             : true
+validation         :
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+
+theme              :
+  name: material
+  custom_dir: docs/theme
+  palette:
+  - media: '(prefers-color-scheme: light)'
+    scheme: material
+    toggle:
+      icon: material/lightbulb-on
+      name: Switch to dark mode
+  - media: '(prefers-color-scheme: dark)'
+    scheme: slate
+    toggle:
+      icon: material/lightbulb-outline
+      name: Switch to light mode
+  logo: theme/.icons/logo.svg
+  favicon: theme/.icons/favicon.png
+  features:
+  - announce.dismiss
+  - content.code.annotate # Code annotations
+  - content.code.copy # Code copy button
+  - content.tabs.link
+  - navigation.indexes
+  - navigation.path
+  - navigation.sections
+  - navigation.tabs
+  - navigation.tabs.sticky
+  - navigation.top
+  - toc.follow
+
+# Navigation
+nav                :
+- Introduction:
+  - Introduction: index.md
+  - Examples: examples.md
+# - Usage:
+#   - QuickStart: quickstart.md
+- API Reference:
+  - Developer Interface: api.md
+- About: about.md
+
+# Add Voltaware Theme and KaTeX
+extra_css          :
+- theme/extra.css
+- https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.css
+
+extra_javascript   :
+# Add KaTeX
+- javascripts/katex.js
+- https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js
+- https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/contrib/auto-render.min.js
+# Add TableSort
+- https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
+- javascripts/tablesort.js
+
+# Additional configuration
+extra              :
+  social:
+  - icon: logo-white
+    link: https://mfurquim.dev/
+  - icon: fontawesome/brands/github
+    link: https://github.com/mfurquimdev
+  - icon: fontawesome/brands/linkedin
+    link: https://www.linkedin.com/in/mfurquimdev
+  - icon: fontawesome/brands/instagram
+    link: https://www.instagram.com/mfurquimdev
+
+# Copyright
+copyright          : Copyright &copy; 2023 <a href="https://mfurquim.dev">MFurquim Dev <img style="height:12px" src="/theme/.icons/logo-white.svg"
+  alt="MFurquim Dev"/></a>
+
+plugins:
+- search
+- autorefs
+- mkdocstrings:
+    handlers:
+      python:
+        paths: [src]  # search packages in the src folder
+        options:
+          show_object_full_path: true
+          docstring_style: google
+          annotations_path: source
+          show_if_no_docstring: true
+
+markdown_extensions:
+  # Add notes
+  - admonition
+  # Add collapsible notes
+  - pymdownx.details
+  # Add table creation
+  - tables
+  # Add automatic code documentation
+  # - mkautodoc
+  # Add auto abbreviations
+  - abbr
+  - pymdownx.snippets:
+      auto_append:
+      - docs/.abbreviations.md
+  # Add KaTeX
+  - pymdownx.arithmatex:
+      generic: true
+  # Enable code highlighting
+  - codehilite:
+      css_class: highlight
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      linenums_style: pymdownx-inline
+      pygments_lang_class: true
+      use_pygments: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  # Add Mermaid for Diagrams
+  - pymdownx.superfences:
+      custom_fences:
+      - name: mermaid
+        class: mermaid
+        format: !!python/name:pymdownx.superfences.fence_code_format
+  # Allow emoji
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  # Allow rendering combination of keyboard keys - e.g., Ctrl+C
+  - pymdownx.keys
+  # Enable editorial syntax - e.g., {++insert me++}, {--remove me--}, {~~substitute this~>with this~~}, {==highlight me==}{>>Add a comment<<}
+  - pymdownx.critic # https://facelessuser.github.io/pymdown-extensions/extensions/critic/
+  # Enable mark highlighting of arbitrary text
+  - pymdownx.mark

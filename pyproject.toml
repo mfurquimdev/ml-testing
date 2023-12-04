@@ -41,6 +41,14 @@ dependencies = [
     "orjson>=3.9.10",
 ]
 
+[project.optional-dependencies]
+docs = [
+    "mkdocs>=1.5.3",
+    "mkdocs-material>=9.4.14",
+    "mkautodoc>=0.2.0",
+    "mkdocstrings[python]>=0.24.0",
+    "mkdocs-macros-plugin>=1.0.5",
+]
 [tool.pdm.dev-dependencies]
 dev = [
     "black",

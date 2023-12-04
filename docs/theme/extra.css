@@ -1,0 +1,77 @@
+[data-md-color-scheme="material"] {
+    /* Main colors */
+    --md-primary-fg-color:        hsl(121, 62%, 44%);
+    --md-primary-fg-color--light: hsl(121, 62%, 49%);
+    --md-primary-fg-color--dark:  hsl(121, 62%, 39%);
+
+    /* Not so white background color */
+    --md-default-bg-color: #ECEFF4;
+
+    /* /1* Nord-inspired light theme *1/ */
+    /* --md-code-fg-color:           #3B4252; */
+    /* --md-code-bg-color:           #E5E9F0; */
+
+}
+
+[data-md-color-scheme="slate"] {
+    /* Main colors */
+    --md-primary-fg-color:        hsl(121, 62%, 44%);
+    --md-primary-fg-color--light: hsl(121, 62%, 49%);
+    --md-primary-fg-color--dark:  hsl(121, 62%, 39%);
+
+    --md-default-bg-color: #242933; /* Darkest black from Nord website */
+    --md-default-fg-color: #ECEFF4; /* Lightest white from Nord palette */
+    --md-default-fg-color--light:   #ECEFF4;
+    --md-default-fg-color--lighter: #66738e;
+    --md-default-fg-color--lightest: #4C566A;
+
+    /* Typeset color shades */
+    --md-typeset-color:    #E5E9F0;
+
+    /* Highlight mark, deletion, and insertion color shades */
+    --md-typeset-mark-color:             hsla(40, 71%, 73%, 0.382);
+    --md-typeset-del-color:              hsla(354, 42%, 56%, 0.382);
+    --md-typeset-ins-color:              hsla(92, 28%, 65%, 0.382);
+
+    /* Keyboard keys color shades */
+    --md-typeset-kbd-color:            #3B4252;
+    --md-typeset-kbd-accent-color:     #4C566A;
+    --md-typeset-kbd-border-color:     #2E3440;
+
+    /* Nord theme */
+    --md-code-fg-color:           #ECEFF4;
+    --md-code-bg-color:           #2E3440;
+
+    /* Nord-thgemed code highlighting color shades */
+    --md-code-hl-color:                  #4C566A;
+    --md-code-hl-color--light:           #3B4252;
+    --md-code-hl-number-color:           #B48EAD;
+    --md-code-hl-special-color:          #FFFFFF;
+    --md-code-hl-function-color:         #81A1C1;
+    --md-code-hl-constant-color:         #88C0D0;
+    --md-code-hl-keyword-color:          #5E81AC;
+    --md-code-hl-string-color:           #A3BE8C;
+    --md-code-hl-name-color:             #ECEFF4;
+    --md-code-hl-operator-color:         #D8DEE9;
+    --md-code-hl-punctuation-color:      #D8DEE9;
+    --md-code-hl-comment-color:          #66738e; /* Brighter nord3 */
+    --md-code-hl-generic-color:          var(--md-default-fg-color--light);
+    --md-code-hl-variable-color:         var(--md-default-fg-color--light);
+
+
+    /* --md-default-bg-color--light:        hsla(0, 100%, 50%, 1); */
+    /* --md-default-bg-color--lighter:      hsla(0, 100%, 50%, 1); */
+    /* --md-default-bg-color--lightest:     hsla(0, 100%, 50%, 1); */
+     /* Typeset `a` color shades */
+    /* --md-typeset-a-color:                    hsla(0, 100%, 50%, 1); */
+
+}
+
+.banner {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.md-header {
+    top: -1px;
+}
